@@ -77,13 +77,6 @@ button {
   gap: 1rem;
 }
 
-article {
-  display: grid;
-  grid-template-rows: subgrid;
-  grid-row: span 3;
-  margin: 0;
-}
-
 .resume {
   display: grid;
   grid-template-columns: 3fr 1fr;
