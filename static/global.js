@@ -28,15 +28,11 @@ let pages = [
   },
 ];
 
-// const ARE_WE_HOME = document.documentElement.classList.contains("home");
-
 let nav = document.createElement("nav");
-document.body.prepend(nav);
 
 for (let p of pages) {
   let url = p.url;
   let title = p.title;
-  // url = !ARE_WE_HOME && !url.startsWith("http") ? "../" + url : url;
   let a = document.createElement("a");
   a.href = url;
   a.textContent = title;
@@ -49,33 +45,3 @@ for (let p of pages) {
   }
   nav.append(a);
 }
-
-document.body.insertAdjacentHTML(
-  "afterbegin",
-  `
-	<label class="color-scheme">
-		Theme:
-		<select>
-            <option value="light">light</option>
-            <option value="light dark">light dark</option>
-            <option value="dark">dark</option>
-		</select>
-	</label>`
-);
-
-const select = document.querySelector("select");
-if ("colorScheme" in localStorage) {
-  document.documentElement.style.setProperty(
-    "color-scheme",
-    localStorage.colorScheme
-  );
-  select.value = localStorage.colorScheme;
-}
-
-select.addEventListener("input", function (event) {
-  document.documentElement.style.setProperty(
-    "color-scheme",
-    event.target.value
-  );
-  localStorage.colorScheme = event.target.value;
-});

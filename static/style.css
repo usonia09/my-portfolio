@@ -9,13 +9,6 @@ body {
   padding: 30px;
 }
 
-.color-scheme {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: block;
-}
-
 nav {
   display: flex;
   margin-bottom: 1rem;
