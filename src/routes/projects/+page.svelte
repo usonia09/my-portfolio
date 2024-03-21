@@ -40,3 +40,11 @@
   <Project info={p} hLevel=3/>
   {/each}
 </div>
+
+
+<style>
+  input {
+    padding: 0.5em;
+    width: 20em;
+  }
+</style>
