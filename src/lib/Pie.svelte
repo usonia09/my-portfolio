@@ -7,21 +7,32 @@
     let sliceGenerator = d3.pie().value(d => d.value);
     let arcData;
     let arcs;
-    $: arcData = sliceGenerator(data);
-    $: arcs = arcData.map(d => arcGenerator(d));
+    
+    export let selectedIndex = -1;
+
+    
+
+    $: {
+        arcData = sliceGenerator(data);
+        arcs = arcData.map(d => arcGenerator(d));
+    }
+    
 
 
 </script>
 
 <div class="container">
     <svg viewBox="-50 -50 100 100">
-        {#each arcs as arc, i}
-            <path d={arc} fill={colors(i)} />
+        {#each arcs as arc, index}
+        <path d={arc} fill={ colors(index) }
+              class:selected={selectedIndex === index}
+              on:click={e => selectedIndex = selectedIndex === index ? -1 : index} />
         {/each}
+    
     </svg>
     <ul class="legend">
         {#each data as d, index}
-            <li style="--color: { colors(index) }">
+            <li style="--color: { colors(index) }" class:selected={selectedIndex === index}>
                 <span class="swatch"></span>
                 {d.label} <em>({d.value})</em>
             </li>
@@ -32,7 +43,13 @@
 
 
 <style>
+.selected {
+	--color: oklch(50% 0.1 145) !important;
 
+	&:is(path) {
+		fill: var(--color);
+	}
+}
 
 svg {
 	max-width: 20em;
@@ -40,6 +57,12 @@ svg {
 	/* Do not clip shapes outside the viewBox */
 	overflow: visible;
 } 
+
+svg:has(path:hover) {
+	path:not(:hover) {
+		opacity: 50%;
+	}
+}
 
 ul {
     border: 1px solid rgb(233, 229, 229);

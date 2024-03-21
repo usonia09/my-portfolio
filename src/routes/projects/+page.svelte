@@ -6,6 +6,8 @@
 
 
   let query = "";
+  let selectedYearIndex = -1;
+
 
   let filteredProjects;
   $: filteredProjects = projects.filter(project => {
@@ -26,17 +28,31 @@
     return { value: count, label: year };
     });
   }
+  let selectedYear;
+  let filteredByYear = projects
+  $: selectedYear = selectedYearIndex > -1 ? pieData[selectedYearIndex].label : null;
+  $: {
+    if (selectedYearIndex !== -1){
+      filteredByYear = projects.filter (project => {
+      return project.year === selectedYear
+    })
+      }
+    
+  }
+ 
+
 </script>
 
 <svelte:head>
 	<title>Projects</title>
 </svelte:head>
 <h1>{projects.length} Projects</h1>
-<Pie data={pieData}/>
+<Pie data={pieData} bind:selectedIndex={selectedYearIndex}/>
+
 <input type="search" bind:value={query}
        aria-label="Search projects" placeholder="🔍 Search projects…" />
 <div class="projects">
-  {#each filteredProjects as p}
+  {#each filteredByYear as p}
   <Project info={p} hLevel=3/>
   {/each}
 </div>
