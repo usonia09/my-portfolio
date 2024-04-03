@@ -54,6 +54,7 @@
 
                     return ret;
                 });
+        console.log(commits)
     });
 
     $: xScale = d3.scaleTime()
@@ -104,6 +105,11 @@
 
     $: selectedCommits = brushSelection ? commits.filter(isCommitSelected) : [];
     $: hasSelection = brushSelection && selectedCommits.length > 0;
+    $: selectedLines = (hasSelection ? selectedCommits : commits).flatMap(d => d.lines);
+
+    // const speciesCount = d3.rollup(penguins, (D) => D.length, (d) => d.species);
+    // speciesSexCount.get("Adelie").get("FEMALE") // 73
+    $: languageBreakdown = d3.rollup(selectedLines, (L) => L.length, (l) => l.type)
 
 
 
@@ -171,6 +177,16 @@
        
     </dl>
     <p>{hasSelection ? selectedCommits.length : "No"} commits selected</p>
+
+    <dl class="stats">
+
+        {#each languageBreakdown as [language, lines] }
+                <dt>{language}</dt>
+                <dd>{lines} lines ({d3.format(".0%")(lines/selectedLines.length)})</dd>
+
+            
+        {/each}
+    </dl>
 
 
 

@@ -99,6 +99,8 @@ dl {
 
 .stats dt {
   grid-row: 1;
+  text-transform: uppercase;
+  color: gray;
 }
 
 .stats dd {
