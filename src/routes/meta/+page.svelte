@@ -4,6 +4,9 @@
 
     let data = [];
     let commits = [];
+    let width = 1000;
+    let height = 600;
+
 
     onMount(async () => {
         data = await d3.csv("loc.csv", row => ({
@@ -38,6 +41,17 @@
                     return ret;
                 });
     });
+
+    $: xScale = d3.scaleTime()
+        .domain(d3.extent(data, d => d.date))
+		.range([0, width])
+        .nice();
+	
+	$: yScale = d3.scaleLinear()
+			.domain([0, 24])
+			.range([0, height]);
+
+
 </script>
 
 <svelte:head>
@@ -60,3 +74,26 @@
     </dl>
     
 </section>
+
+<svg viewBox="0 0 {width} {height}">
+
+    <g class="dots">
+        {#each commits as commit, index }
+            <circle
+                cx={ xScale(commit.datetime) }
+                cy={ yScale(commit.hourFrac) }
+                r="5"
+                fill="steelblue"
+            />
+        {/each}
+        </g>
+        
+</svg>
+
+<style>
+	svg {
+		overflow: visible;
+	}
+</style>
+
+
