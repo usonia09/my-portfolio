@@ -81,10 +81,29 @@
     let cursor = {x: 0, y: 0};
 
     $: {
-	    d3.select(svg).call(d3.brush());
+	    d3.select(svg).call(d3.brush().on("start brush end", brushed));
         d3.select(svg).selectAll(".dots, .overlay ~ *").raise();
     }
 
+    let brushSelection;
+    function brushed (evt) {
+	   brushSelection = evt.selection
+    }
+
+    function isCommitSelected (commit) {
+	if (!brushSelection) {
+		return false;
+	}
+    let min = {x: brushSelection[0][0], y: brushSelection[0][1]};
+    let max = {x: brushSelection[1][0], y: brushSelection[1][1]};
+    let x = xScale(commit.date);
+    let y = yScale(commit.hourFrac);
+    return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
+
+    }
+
+    $: selectedCommits = brushSelection ? commits.filter(isCommitSelected) : [];
+    $: hasSelection = brushSelection && selectedCommits.length > 0;
 
 
 
@@ -121,7 +140,8 @@
                     r="5"
                     fill="steelblue"
                     on:mouseenter={evt => {hoveredIndex = index;
-                    cursor = {x: evt.x, y: evt.y};}
+                    cursor = {x: evt.x, y: evt.y};
+                     }
                     }
                     on:mouseleave={evt => hoveredIndex = -1}
                 />
@@ -150,6 +170,8 @@
         <dd>{ hoveredCommit.totalLines}</dd>
        
     </dl>
+    <p>{hasSelection ? selectedCommits.length : "No"} commits selected</p>
+
 
 
 
