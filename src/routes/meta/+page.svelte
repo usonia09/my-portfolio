@@ -46,13 +46,19 @@
     <title>Meta</title>
 </svelte:head>
 
-<section>
+<section class="data_section">
     <h2>Summary Stats</h2>
     <dl class="stats">
-        <dt>Total <abbr title="Lines of code">LOC</abbr></dt>
+        <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
         <dd>{data.length}</dd>
-        <!-- <dt>Total <abbr title="Total number of Commits">COMS</abbr></dt>
-        <dd>{commits.length}</dd> -->
+        <dt>COMMITS</dt>
+        <dd>23</dd>
+        <dt>FILES</dt>
+        <dd>23</dd>
+        <dt>LONGEST LINE</dt>
+        <dd>23</dd>
+        <dt>MAX LINES</dt>
+        <dd>23</dd>
     </dl>
     
 </section>

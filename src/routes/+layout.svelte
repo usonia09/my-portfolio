@@ -13,35 +13,6 @@
  		</select>
 </label>
 <slot />
-{#await fetch("https://api.github.com/users/usonia09") }
-	<p>Loading...</p>
-{:then response}
-	{#await response.json()}
-		<p>Decoding...</p>
-	{:then data}
-        <section>
-            <h2>My GitHub Stats</h2>
-            <dl>
-                <dt>Number of Public Repos: </dt>
-                <dd>{data.public_repos}</dd>
-
-                <dt>Followers:</dt>
-                <dd>{data.followers}</dd>
-
-                <dt>Following:</dt>
-                <dd>{data.following}</dd>
-            </dl>
-        </section>
-	{:catch error}
-		<p class="error">
-			Something went wrong: {error.message}
-		</p>
-	{/await}
-{:catch error}
-	<p class="error">
-		Something went wrong: {error.message}
-	</p>
-{/await}
 
 <script>
     let root = globalThis?.document?.documentElement;
@@ -77,16 +48,6 @@
         top: 1rem;
         right: 1rem;
         display: block;
-    }
-    dl {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-    dt {
-        grid-row: 1;
-    }
-    dd {
-        grid-row: 2;
     }
 </style>
 
