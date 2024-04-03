@@ -65,7 +65,7 @@
 			.domain([0, 24])
 			.range([usableArea.bottom, usableArea.top]);
 
-    let xAxis, yAxis, yAxisGridlines;
+    let xAxis, yAxis, yAxisGridlines, svg;
 
     $: {
         d3.select(xAxis).call(d3.axisBottom(xScale));
@@ -79,6 +79,13 @@
         } 
     
     let cursor = {x: 0, y: 0};
+
+    $: {
+	    d3.select(svg).call(d3.brush());
+        d3.select(svg).selectAll(".dots, .overlay ~ *").raise();
+    }
+
+
 
 
 </script>
@@ -104,7 +111,7 @@
     
 </section>
 
-    <svg viewBox="0 0 {width} {height}">
+    <svg viewBox="0 0 {width} {height}" bind:this={svg}>
 
         <g class="dots">
             {#each commits as commit, index }
