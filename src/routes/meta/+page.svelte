@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
 
     let data = [];
+    let commits = [];
 
     onMount(async () => {
         data = await d3.csv("loc.csv", row => ({
@@ -14,7 +15,6 @@
             datetime: new Date(row.datetime)
         }));
 
-        let commits = [];
         commits = d3.groups(data, d => d.commit).map(([commit, lines]) => {
                     let first = lines[0];
                     let {author, date, time, timezone, datetime} = first;
@@ -37,9 +37,7 @@
 
                     return ret;
                 });
-
     });
-
 </script>
 
 <svelte:head>
@@ -52,13 +50,13 @@
         <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
         <dd>{data.length}</dd>
         <dt>COMMITS</dt>
-        <dd>23</dd>
-        <dt>FILES</dt>
-        <dd>23</dd>
+        <dd>{commits.length}</dd>
+        <dt>AVERAGE LINE LENGTH</dt>
+        <dd>{d3.mean(data, d => d.length)}</dd>
         <dt>LONGEST LINE</dt>
-        <dd>23</dd>
+        <dd>{d3.max(data, d => d.length)}</dd>
         <dt>MAX LINES</dt>
-        <dd>23</dd>
+        <dd>{d3.max(data, d => d.line)}</dd>
     </dl>
     
 </section>
