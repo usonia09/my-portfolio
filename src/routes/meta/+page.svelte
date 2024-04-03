@@ -109,8 +109,6 @@
     $: hasSelection = brushSelection && selectedCommits.length > 0;
     $: selectedLines = (hasSelection ? selectedCommits : commits).flatMap(d => d.lines);
 
-    // const speciesCount = d3.rollup(penguins, (D) => D.length, (d) => d.species);
-    // speciesSexCount.get("Adelie").get("FEMALE") // 73
     $: languageBreakdown = d3.rollup(selectedLines, (L) => L.length, (l) => l.type)
 
 
@@ -153,6 +151,15 @@
                     }
                     on:mouseleave={evt => hoveredIndex = -1}
                 />
+            {/each}
+
+            {#each selectedCommits as commit}
+                <circle
+                cx={ xScale(commit.datetime) }
+                cy={ yScale(commit.hourFrac) }
+                r="5"
+                fill="red"/>
+
             {/each}
         </g>
         <g class="gridlines" transform="translate({usableArea.left}, 0)" bind:this={yAxisGridlines} />
@@ -237,6 +244,11 @@
             transform-origin: center;
             transform-box: fill-box;
 
+        }
+        &:selection {
+            color: red;
+            fill: red;
+            background-color: aquamarine;
         }
    }
 
