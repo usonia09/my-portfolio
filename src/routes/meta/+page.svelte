@@ -1,6 +1,8 @@
 <script>
     import * as d3 from "d3";
     import { onMount } from "svelte";
+    import Pie from "$lib/Pie.svelte";
+
 
     let data = [];
     let commits = [];
@@ -178,7 +180,7 @@
     </dl>
     <p>{hasSelection ? selectedCommits.length : "No"} commits selected</p>
 
-    <dl class="stats">
+    <!-- <dl class="stats">
 
         {#each languageBreakdown as [language, lines] }
                 <dt>{language}</dt>
@@ -186,7 +188,9 @@
 
             
         {/each}
-    </dl>
+    </dl> -->
+    <Pie data={Array.from(languageBreakdown).map(([language, lines]) => ({label: language, value: lines}))} />
+
 
 
 
