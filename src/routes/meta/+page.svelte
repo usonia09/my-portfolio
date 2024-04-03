@@ -78,7 +78,8 @@
             .tickFormat("").tickSize(-usableArea.width));
         } 
     
-    
+    let cursor = {x: 0, y: 0};
+
 
 </script>
 
@@ -112,7 +113,9 @@
                     cy={ yScale(commit.hourFrac) }
                     r="5"
                     fill="steelblue"
-                    on:mouseenter={evt => hoveredIndex = index}
+                    on:mouseenter={evt => {hoveredIndex = index;
+                    cursor = {x: evt.x, y: evt.y};}
+                    }
                     on:mouseleave={evt => hoveredIndex = -1}
                 />
             {/each}
@@ -122,7 +125,8 @@
         <g transform="translate({usableArea.left}, 0)" bind:this={yAxis} />
         
     </svg>
-    <dl id="commit-tooltip" class="info tooltip"  hidden={hoveredIndex === -1}>
+    <dl id="commit-tooltip" class="info tooltip" hidden={hoveredIndex === -1} style="top: {cursor.y}px; left: {cursor.x}px">
+
         <dt>Commit</dt>
         <dd><a href="{ hoveredCommit.url }" target="_blank">{ hoveredCommit.id }</a></dd>
     
