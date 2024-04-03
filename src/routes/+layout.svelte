@@ -60,6 +60,10 @@
         url: "./resume",
         title: "My Resume",
     },
+    {
+        url: "./meta",
+        title: "Meta",
+    }
     ];
     let colorScheme = localStorage.colorScheme ?? "light dark";
     $: root?.style.setProperty("color-scheme", colorScheme);

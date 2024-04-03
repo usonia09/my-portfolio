@@ -26,6 +26,10 @@ let pages = [
     url: "resume",
     title: "My Resume",
   },
+  {
+    url: "meta",
+    title: "Meta",
+  },
 ];
 
 let nav = document.createElement("nav");
