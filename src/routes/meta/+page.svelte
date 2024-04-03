@@ -18,6 +18,9 @@
     usableArea.height = usableArea.bottom - usableArea.top;
 
 
+    let hoveredIndex = -1;
+    $: hoveredCommit = commits[hoveredIndex] ?? {};
+
 
     onMount(async () => {
         data = await d3.csv("loc.csv", row => ({
@@ -100,32 +103,89 @@
     
 </section>
 
-<svg viewBox="0 0 {width} {height}">
+    <svg viewBox="0 0 {width} {height}">
 
-    <g class="dots">
-        {#each commits as commit, index }
-            <circle
-                cx={ xScale(commit.datetime) }
-                cy={ yScale(commit.hourFrac) }
-                r="5"
-                fill="steelblue"
-            />
-        {/each}
-    </g>
-    <g class="gridlines" transform="translate({usableArea.left}, 0)" bind:this={yAxisGridlines} />
-    <g transform="translate(0, {usableArea.bottom})" bind:this={xAxis} />
-    <g transform="translate({usableArea.left}, 0)" bind:this={yAxis} />
-
+        <g class="dots">
+            {#each commits as commit, index }
+                <circle
+                    cx={ xScale(commit.datetime) }
+                    cy={ yScale(commit.hourFrac) }
+                    r="5"
+                    fill="steelblue"
+                    on:mouseenter={evt => hoveredIndex = index}
+                    on:mouseleave={evt => hoveredIndex = -1}
+                />
+            {/each}
+        </g>
+        <g class="gridlines" transform="translate({usableArea.left}, 0)" bind:this={yAxisGridlines} />
+        <g transform="translate(0, {usableArea.bottom})" bind:this={xAxis} />
+        <g transform="translate({usableArea.left}, 0)" bind:this={yAxis} />
         
-</svg>
+    </svg>
+    <dl id="commit-tooltip" class="info tooltip"  hidden={hoveredIndex === -1}>
+        <dt>Commit</dt>
+        <dd><a href="{ hoveredCommit.url }" target="_blank">{ hoveredCommit.id }</a></dd>
+    
+        <dt>Date</dt>
+        <dd>{ hoveredCommit.date?.toLocaleString("en", {datetime: "%B %d, %Y"}) }</dd>
+    
+        <dt>Time</dt>
+        <dd>{ hoveredCommit.time }</dd>
+    
+        <dt>Author</dt>
+        <dd>{ hoveredCommit.author}</dd>
+
+        <dt>Lines</dt>
+        <dd>{ hoveredCommit.totalLines}</dd>
+       
+    </dl>
+
+
+
 
 <style>
+
 	svg {
 		overflow: visible;
 	}
     .gridlines {
 	stroke-opacity: .2;
     }
+
+    dl.info {
+        display: grid;
+        transition-duration: 500ms;
+        transition-property: opacity, visibility;
+
+        &[hidden]:not(:hover, :focus-within) {
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+
+    .info dt {
+        font-weight: bold;
+    }
+
+    .tooltip {
+        position: fixed;
+        top: 1em;
+        left: 1em;
+        background-color: rgb(182, 181, 181);
+        box-shadow: 2px 2px 2px rgb(87, 86, 86);
+        padding: 1em;
+        border-radius: 10px;
+    }
+
+    circle {
+
+        &:hover {
+            transform: scale(1.5);
+            transform-origin: center;
+            transform-box: fill-box;
+
+        }
+   }
 
 </style>
 
