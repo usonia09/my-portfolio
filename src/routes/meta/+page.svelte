@@ -117,7 +117,10 @@
         else if (evt.type === "mouseleave" || evt.type === "blur") {
             // dot unhovered
             hoveredIndex = -1
-        }
+        } else if (evt.type === "click" || evt.type === "keyup" && evt.key === "Enter") {
+            // dot clicked
+            selectedCommits = [commits[index]]
+        } 
 
     }
 
@@ -184,6 +187,7 @@
                     tabindex="0"
                     aria-describedby="commit-tooltip"
                     aria-haspopup="true"
+                    on:click={evt => dotInteraction(index, evt)}
                 />
             {/each}
 
