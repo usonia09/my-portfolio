@@ -25,6 +25,11 @@
         .range([0, 100])
         .nice();
 
+    $: rScale = d3.scaleLinear()
+			.domain(d3.extent(data, d => d.length))
+			.range([2, 30])
+            .nice();
+
     $: commitMaxTime = timeScale.invert(commitProgress);
 
     $: filteredCommits = commits.filter( (commit) => commit.datetime < commitMaxTime)
@@ -64,6 +69,8 @@
                         hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
                         totalLines: lines.length
                     };
+
+                    // https://github.com/61040-fa23/portfolio-usonia09
 
                     // Like ret.lines = lines
                     // but non-enumerable so it doesn’t show up in JSON.stringify
@@ -193,7 +200,7 @@
                 <circle
                     cx={ xScale(commit.datetime) }
                     cy={ yScale(commit.hourFrac) }
-                    r="5"
+                    r= {rScale(commit.totalLines)}
                     fill="steelblue"
                     on:mouseenter={evt => dotInteraction(index, evt)}
                     on:mouseleave={evt => dotInteraction(index, evt)}
@@ -258,10 +265,12 @@
 
 	svg {
 		overflow: visible;
+    
 	}
     .gridlines {
 	stroke-opacity: .2;
     }
+
 
     dl.info {
         display: grid;
@@ -312,6 +321,9 @@
             color: red;
             fill: red;
             background-color: aquamarine;
+        }
+        @starting-style {
+            r: 0;
         }
    }
 
