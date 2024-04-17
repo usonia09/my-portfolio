@@ -189,7 +189,7 @@
     <svg viewBox="0 0 {width} {height}" bind:this={svg}>
 
         <g class="dots">
-            {#each filteredCommits as commit, index }
+            {#each filteredCommits as commit, index (commit.id) }
                 <circle
                     cx={ xScale(commit.datetime) }
                     cy={ yScale(commit.hourFrac) }
