@@ -2,6 +2,12 @@
     import * as d3 from "d3";
     import { onMount } from "svelte";
     import Pie from "$lib/Pie.svelte";
+    import {
+        computePosition,
+        autoPlacement,
+        offset,
+    } from '@floating-ui/dom';
+
 
 
     let data = [];
@@ -10,6 +16,10 @@
     let width = 1000;
     let height = 600;
     let margin = {top: 10, right: 10, bottom: 30, left: 20};
+    let commitTooltip;
+    let tooltipPosition = {x: 0, y: 0};
+
+
 
     let usableArea = {
 	top: margin.top,
@@ -81,13 +91,36 @@
             d3.axisLeft(yScale)
             .tickFormat("").tickSize(-usableArea.width));
         } 
-    
-    let cursor = {x: 0, y: 0};
+
 
     $: {
 	    d3.select(svg).call(d3.brush().on("start brush end", brushed));
         d3.select(svg).selectAll(".dots, .overlay ~ *").raise();
     }
+
+    async function dotInteraction (index, evt) {
+	// code will go here
+        let hoveredDot = evt.target;
+
+        if (evt.type === "mouseenter" || evt.type === "focus") {
+            // dot hovered
+            hoveredIndex = index;
+            tooltipPosition = await computePosition(hoveredDot, commitTooltip, {
+                strategy: "fixed", // because we use position: fixed
+                middleware: [
+                    offset(5), // spacing from tooltip to dot
+                    autoPlacement() // see https://floating-ui.com/docs/autoplacement
+                ],
+            });
+
+        }
+        else if (evt.type === "mouseleave" || evt.type === "blur") {
+            // dot unhovered
+            hoveredIndex = -1
+        }
+
+    }
+
 
     function brushed (evt) {
         let brushSelection = evt.selection;
@@ -146,11 +179,11 @@
                     cy={ yScale(commit.hourFrac) }
                     r="5"
                     fill="steelblue"
-                    on:mouseenter={evt => {hoveredIndex = index;
-                    cursor = {x: evt.x, y: evt.y};
-                     }
-                    }
-                    on:mouseleave={evt => hoveredIndex = -1}
+                    on:mouseenter={evt => dotInteraction(index, evt)}
+                    on:mouseleave={evt => dotInteraction(index, evt)}
+                    tabindex="0"
+                    aria-describedby="commit-tooltip"
+                    aria-haspopup="true"
                 />
             {/each}
 
@@ -168,7 +201,7 @@
         <g transform="translate({usableArea.left}, 0)" bind:this={yAxis} />
         
     </svg>
-    <dl id="commit-tooltip" class="info tooltip" hidden={hoveredIndex === -1} style="top: {cursor.y}px; left: {cursor.x}px">
+    <dl id="commit-tooltip" class="info tooltip" hidden={hoveredIndex === -1} style="top: {tooltipPosition.y}px; left: {tooltipPosition.x}px"  bind:this={commitTooltip} role="tooltip">
 
         <dt>Commit</dt>
         <dd><a href="{ hoveredCommit.url }" target="_blank">{ hoveredCommit.id }</a></dd>
