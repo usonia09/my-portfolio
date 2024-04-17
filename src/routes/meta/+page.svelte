@@ -18,7 +18,14 @@
     let margin = {top: 10, right: 10, bottom: 30, left: 20};
     let commitTooltip;
     let tooltipPosition = {x: 0, y: 0};
+    let commitProgress = 100;
 
+    $: timeScale = d3.scaleTime()
+        .domain(d3.extent(data, d => d.date))
+        .range([0, 100])
+        .nice();
+
+    $: commitMaxTime = timeScale.invert(commitProgress);
 
 
     let usableArea = {
@@ -157,7 +164,12 @@
 </svelte:head>
 
 <section class="data_section">
-    <h2>Summary Stats</h2>
+    <div class="slider">
+        <label for="commit_time">Show commits until:</label>
+        <input type="range" id="slider" bind:value={commitProgress} min="0" max="100">
+
+    </div>
+    <time datetime="2018-07-07T20:00:00">{commitMaxTime.toLocaleString()}</time>
     <dl class="stats">
         <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
         <dd>{data.length}</dd>
@@ -259,6 +271,18 @@
             opacity: 0;
             visibility: hidden;
         }
+    }
+
+
+    .slider {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+
+    }
+
+    time {
+        display: flex;
+        justify-content: flex-end;
     }
 
     .info dt {
