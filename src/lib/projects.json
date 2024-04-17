@@ -1,5 +1,13 @@
 [
   {
+    "title": "Boston Bike System",
+    "year": "2024",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "url": "https://usonia09.github.io/bike-system/",
+    "description": "A visualization of the bike systems in boston. The dataset used was provided by the bluebike system"
+  },
+
+  {
     "title": "Exploratory Data Analysis",
     "year": "2024",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
