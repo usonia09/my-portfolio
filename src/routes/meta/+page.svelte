@@ -27,6 +27,8 @@
 
     $: commitMaxTime = timeScale.invert(commitProgress);
 
+    $: filteredCommits = commits.filter( (commit) => commit.datetime < commitMaxTime)
+    $: filteredLines = data.filter((data) => data.datetime < commitMaxTime)
 
     let usableArea = {
 	top: margin.top,
@@ -39,7 +41,7 @@
 
 
     let hoveredIndex = -1;
-    $: hoveredCommit = commits[hoveredIndex] ?? {};
+    $: hoveredCommit = filteredCommits[hoveredIndex] ?? {};
 
 
     onMount(async () => {
@@ -74,11 +76,10 @@
 
                     return ret;
                 });
-        console.log(commits)
     });
 
     $: xScale = d3.scaleTime()
-        .domain(d3.extent(data, d => d.date))
+        .domain(d3.extent(filteredLines, d => d.date))
 		.range([usableArea.left, usableArea.right])
         .nice();
 	
@@ -134,7 +135,7 @@
 
     function brushed (evt) {
         let brushSelection = evt.selection;
-        selectedCommits = !brushSelection ? [] : commits.filter(commit => {
+        selectedCommits = !brushSelection ? [] : filteredCommits.filter(commit => {
             let min = {x: brushSelection[0][0], y: brushSelection[0][1]};
             let max = {x: brushSelection[1][0], y: brushSelection[1][1]};
             let x = xScale(commit.date);
@@ -172,15 +173,15 @@
     <time datetime="2018-07-07T20:00:00">{commitMaxTime.toLocaleString()}</time>
     <dl class="stats">
         <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
-        <dd>{data.length}</dd>
+        <dd>{filteredLines.length}</dd>
         <dt>COMMITS</dt>
-        <dd>{commits.length}</dd>
+        <dd>{filteredCommits.length}</dd>
         <dt>AVERAGE LINE LENGTH</dt>
-        <dd>{d3.mean(data, d => d.length)}</dd>
+        <dd>{d3.mean(filteredLines, d => d.length)}</dd>
         <dt>LONGEST LINE</dt>
-        <dd>{d3.max(data, d => d.length)}</dd>
+        <dd>{d3.max(filteredLines, d => d.length)}</dd>
         <dt>MAX LINES</dt>
-        <dd>{d3.max(data, d => d.line)}</dd>
+        <dd>{d3.max(filteredLines, d => d.line)}</dd>
     </dl>
     
 </section>
@@ -188,7 +189,7 @@
     <svg viewBox="0 0 {width} {height}" bind:this={svg}>
 
         <g class="dots">
-            {#each commits as commit, index }
+            {#each filteredCommits as commit, index }
                 <circle
                     cx={ xScale(commit.datetime) }
                     cy={ yScale(commit.hourFrac) }
