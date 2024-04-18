@@ -17,9 +17,12 @@
 	{#each files as file (file.name) }
 		<div>
 			<dt>
-				<code>{file.name}</code>
+				<code>{file.name}, {file.lines.length}</code>
 			</dt>
-			<dd>{file.lines.length} lines</dd>
+			{#each file.lines as line (line.line) }
+                <div class="line"></div>
+            {/each}
+
 		</div>
 	{/each}
 </dl>
@@ -28,13 +31,33 @@
 <style>
     dl {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        /* grid-template-columns: 1fr 1fr; */
             & > div {
             grid-column: 1 / -1;
             display: grid;
             grid-template-columns: subgrid;
         }
     }
+
+    dd {
+        grid-column: 2;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: start;
+        align-content: start;
+        gap: .15em;
+        padding-top: .6em;
+        margin-left: 0;
+    }
+
+    .line {
+        display: flex;
+        width: .5em;
+        aspect-ratio: 1;
+        background: steelblue;
+        border-radius: 50%;
+    }
+
 
 
 </style>
