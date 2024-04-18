@@ -91,7 +91,7 @@
     });
 
     $: xScale = d3.scaleTime()
-        .domain(d3.extent(filteredLines, d => d.date))
+        .domain(d3.extent(filteredCommits, d => d.date))
 		.range([usableArea.left, usableArea.right])
         .nice();
 	
@@ -164,11 +164,9 @@
 
 
     $: hasSelection = selectedCommits.length > 0;
-    $: selectedLines = (hasSelection ? selectedCommits : commits).flatMap(d => d.lines);
+    $: selectedLines = (hasSelection ? selectedCommits : filteredCommits).flatMap(d => d.lines);
 
-    $: languageBreakdown = hasSelection? d3.rollup(selectedLines, (L) => L.length, (l) => l.type): d3.rollup(filteredLines, (L) => L.length, (l) => l.type);
-
-
+    $: languageBreakdown =  d3.rollup(selectedLines, (L) => L.length, (l) => l.type);
 
 </script>
 
