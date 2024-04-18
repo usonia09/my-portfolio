@@ -2,6 +2,7 @@
     import * as d3 from "d3";
     import { onMount } from "svelte";
     import Pie from "$lib/Pie.svelte";
+    import FileLines from "./FileLines.svelte";
     import {
         computePosition,
         autoPlacement,
@@ -12,6 +13,7 @@
 
     let data = [];
     let commits = [];
+
     let selectedCommits = [];
     let width = 1000;
     let height = 600;
@@ -178,6 +180,8 @@
 
     </div>
     <time datetime="2018-07-07T20:00:00">{commitMaxTime.toLocaleString()}</time>
+    <FileLines lines={filteredLines} />
+
     <dl class="stats">
         <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
         <dd>{filteredLines.length}</dd>
@@ -333,5 +337,4 @@
    }
 
 </style>
-
 
