@@ -3,7 +3,7 @@
   import { scale } from "svelte/transition";
 
     export let lines =[];
-    let colors = d3.scaleOrdinal(d3.schemeTableau10);
+    export let colors = [];
 
     let files = [];
     $: {

@@ -3,7 +3,7 @@
 
     let arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
     export let data = [];
-    let colors = d3.scaleOrdinal(d3.schemeTableau10);
+    export let colors = [];
     let sliceGenerator = d3.pie().value(d => d.value);
     let arcData;
     let arcs;
@@ -28,7 +28,7 @@
 <div class="container">
     <svg viewBox="-50 -50 100 100">
         {#each pieData as d, index}
-        <path d={d.arc} fill={ colors(d.label) }
+        <path d={d.arc} fill={ colors(d.id?? d.label) }
               class:selected={selectedIndex === index}
               on:click={e => selectedIndex = selectedIndex === index ? -1 : index} />
         {/each}

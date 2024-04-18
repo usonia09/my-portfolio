@@ -13,6 +13,7 @@
 
     let data = [];
     let commits = [];
+    let colors = d3.scaleOrdinal(d3.schemeTableau10);
 
     let selectedCommits = [];
     let width = 1000;
@@ -180,7 +181,6 @@
 
     </div>
     <time datetime="2018-07-07T20:00:00">{commitMaxTime.toLocaleString()}</time>
-    <FileLines lines={filteredLines} />
 
     <dl class="stats">
         <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
@@ -259,9 +259,9 @@
             
         {/each}
     </dl> -->
-    <Pie data={Array.from(languageBreakdown).map(([language, lines]) => ({label: language, value: lines}))} />
-
-
+    <Pie data={Array.from(languageBreakdown).map(([language, lines]) => ({label: language, value: lines}))} colors={colors} />
+    <h2>Codebase evaluation</h2>
+    <FileLines lines={filteredLines} colors={colors}/>
 
 
 
