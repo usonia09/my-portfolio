@@ -221,8 +221,8 @@
                 <circle
                 cx={ xScale(commit.datetime) }
                 cy={ yScale(commit.hourFrac) }
-                r="5"
-                fill="red"/>
+                r={rScale(commit.totalLines)}
+                fill="orange"/>
 
             {/each}
         </g>
@@ -327,9 +327,9 @@
         }
 
         &:selection {
-            color: red;
-            fill: red;
-            background-color: aquamarine;
+            /* color: red; */
+            fill: orange;
+            /* background-color: aquamarine; */
         }
         @starting-style {
             r: 0;

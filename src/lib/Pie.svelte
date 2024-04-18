@@ -5,7 +5,7 @@
     let arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
     export let data = [];
     export let colors = [];
-    let sliceGenerator = d3.pie().value(d => d.value);
+    let sliceGenerator = d3.pie().value(d => d.value).sort(null);
     let arcData;
     let arcs;
     let pieData;
@@ -17,6 +17,7 @@
     $: {
         arcData = sliceGenerator(pieData);
         arcs = arcData.map(d => arcGenerator(d));
+        pieData = d3.sort(data, d => d.label);
         pieData = pieData.map((d, i) => ({...d, ...arcData[i], arc: arcs[i]}));
     };
 
@@ -31,7 +32,7 @@
         {#each pieData as d, index}
         <path d={d.arc} fill={ colors(d.id?? d.label) }
               class:selected={selectedIndex === index}
-              on:click={e => selectedIndex = selectedIndex === index ? -1 : index} />
+              on:click={e => selectedIndex = selectedIndex === index ? -1 : index} fill-opacity="75%"/>
         {/each}
     
     </svg>
