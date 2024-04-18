@@ -181,7 +181,7 @@
 
     </div>
     <time datetime="2018-07-07T20:00:00">{commitMaxTime.toLocaleString()}</time>
-
+    <FileLines lines={filteredLines} colors={colors}/>
     <dl class="stats">
         <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
         <dd>{filteredLines.length}</dd>
@@ -261,7 +261,7 @@
     </dl> -->
     <Pie data={Array.from(languageBreakdown).map(([language, lines]) => ({label: language, value: lines}))} colors={colors} />
     <h2>Codebase evaluation</h2>
-    <FileLines lines={filteredLines} colors={colors}/>
+
 
 
 

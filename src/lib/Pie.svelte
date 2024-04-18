@@ -1,6 +1,7 @@
 <script>
     import * as d3 from 'd3';
 
+
     let arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
     export let data = [];
     export let colors = [];

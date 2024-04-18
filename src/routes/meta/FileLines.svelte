@@ -1,6 +1,9 @@
 <script>
     import * as d3 from "d3";
   import { scale } from "svelte/transition";
+  import { flip as originalFlip } from "svelte/animate";
+
+
 
     export let lines =[];
     export let colors = [];
@@ -13,6 +16,11 @@
         files = d3.sort(files, d => -d.lines.length);
 
     }
+    function getFlip () {
+        return originalFlip;
+    }
+    $: flip = getFlip(files);
+
 
 </script>
 
@@ -23,7 +31,7 @@
 				<code>{file.name}, {file.lines.length}</code>
 			</dt>
 			{#each file.lines as line (line.line) }
-                <div class="line" style="--color: { colors(line.type) }" transition:scale={ 2}>
+                <div class="line" style="--color: { colors(line.type) }" transition:scale={ 2} animate:flip>
                 </div>
             {/each}
 
@@ -40,6 +48,8 @@
             grid-column: 1 / -1;
             display: grid;
             grid-template-columns: subgrid;
+            /* background: hsl(0 0% 100% / 90%); */
+	        /* box-shadow: 0 0 .2em .2em hsl(0 0% 100% / 90%); */
         }
     }
 
