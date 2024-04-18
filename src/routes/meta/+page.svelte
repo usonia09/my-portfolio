@@ -166,7 +166,7 @@
     $: hasSelection = selectedCommits.length > 0;
     $: selectedLines = (hasSelection ? selectedCommits : commits).flatMap(d => d.lines);
 
-    $: languageBreakdown = hasSelection? d3.rollup(selectedLines, (L) => L.length, (l) => l.type): filteredCommits;
+    $: languageBreakdown = hasSelection? d3.rollup(selectedLines, (L) => L.length, (l) => l.type): d3.rollup(filteredCommits, (L) => L.length, (l) => l.type);
 
 
 
