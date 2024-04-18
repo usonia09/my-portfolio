@@ -2,6 +2,8 @@
     import * as d3 from "d3";
 
     export let lines =[];
+    let colors = d3.scaleOrdinal(d3.schemeTableau10);
+
     let files = [];
     $: {
         files = d3.groups(lines, d => d.file).map(([name, lines]) => {
@@ -20,7 +22,8 @@
 				<code>{file.name}, {file.lines.length}</code>
 			</dt>
 			{#each file.lines as line (line.line) }
-                <div class="line"></div>
+                <div class="line" style="--color: { colors(line.type) }">
+                </div>
             {/each}
 
 		</div>
@@ -54,7 +57,7 @@
         display: flex;
         width: .5em;
         aspect-ratio: 1;
-        background: steelblue;
+        background: var(--color);
         border-radius: 50%;
     }
 
