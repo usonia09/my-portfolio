@@ -199,7 +199,7 @@
 
     <svg viewBox="0 0 {width} {height}" bind:this={svg}>
 
-        <g class="dots" style="width: {100}">
+        <g class="dots">
             {#each filteredCommits as commit, index (commit.id) }
                 <circle
                     cx={ xScale(commit.datetime) }
@@ -319,13 +319,13 @@
     }
 
     circle {
-
+        /* transition: 200ms; */
         &:hover {
-            transform: scale(1.5);
+            transform: scale(1.2);
             transform-origin: center;
             transform-box: fill-box;
-
         }
+
         &:selection {
             color: red;
             fill: red;
