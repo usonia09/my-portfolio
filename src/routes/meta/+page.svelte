@@ -263,14 +263,8 @@
             </dl>
             <p>{hasSelection ? selectedCommits.length : "No"} commits selected</p>
             <Pie data={Array.from(languageBreakdown).map(([language, lines]) => ({label: language, value: lines}))} colors={colors} />
-                    
-            <!-- <h2>Codebase evaluation</h2> -->
-            <!-- <FileLines lines={filteredLines} colors={colors}/> -->
         </svelte:fragment>
     </Scrolly>
-
-    
-
 
     <Scrolly bind:progress={ commitProgress } --scrolly-layout="viz-first" --scrolly-viz-width="1.5fr">
         {#each commits as commit, index }
@@ -288,9 +282,6 @@
             <FileLines lines={filteredLines} colors={colors}/>
         </svelte:fragment>
     </Scrolly>
-
-
-
 
 
 <style>
