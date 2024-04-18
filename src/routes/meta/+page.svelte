@@ -25,7 +25,7 @@
         .range([0, 100])
         .nice();
 
-    $: rScale = d3.scaleLinear()
+    $: rScale = d3.scaleSqrt()
 			.domain(d3.extent(data, d => d.length))
 			.range([2, 30])
             .nice();
@@ -195,7 +195,7 @@
 
     <svg viewBox="0 0 {width} {height}" bind:this={svg}>
 
-        <g class="dots">
+        <g class="dots" style="width: {100}">
             {#each filteredCommits as commit, index (commit.id) }
                 <circle
                     cx={ xScale(commit.datetime) }
@@ -208,6 +208,7 @@
                     aria-describedby="commit-tooltip"
                     aria-haspopup="true"
                     on:click={evt => dotInteraction(index, evt)}
+                    fill-opacity="50%"
                 />
             {/each}
 
@@ -223,7 +224,6 @@
         <g class="gridlines" transform="translate({usableArea.left}, 0)" bind:this={yAxisGridlines} />
         <g transform="translate(0, {usableArea.bottom})" bind:this={xAxis} />
         <g transform="translate({usableArea.left}, 0)" bind:this={yAxis} />
-        
     </svg>
     <dl id="commit-tooltip" class="info tooltip" hidden={hoveredIndex === -1} style="top: {tooltipPosition.y}px; left: {tooltipPosition.x}px"  bind:this={commitTooltip} role="tooltip">
 
@@ -265,8 +265,12 @@
 
 	svg {
 		overflow: visible;
+        margin: 10px;
     
 	}
+    .dots {
+        width: 100%;
+    }
     .gridlines {
 	stroke-opacity: .2;
     }
