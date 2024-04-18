@@ -1,5 +1,6 @@
 <script>
     import * as d3 from "d3";
+  import { scale } from "svelte/transition";
 
     export let lines =[];
     let colors = d3.scaleOrdinal(d3.schemeTableau10);
@@ -22,7 +23,7 @@
 				<code>{file.name}, {file.lines.length}</code>
 			</dt>
 			{#each file.lines as line (line.line) }
-                <div class="line" style="--color: { colors(line.type) }">
+                <div class="line" style="--color: { colors(line.type) }" transition:scale={ 2}>
                 </div>
             {/each}
 
@@ -34,7 +35,7 @@
 <style>
     dl {
         display: grid;
-        /* grid-template-columns: 1fr 1fr; */
+        grid-template-columns: 1fr 1fr;
             & > div {
             grid-column: 1 / -1;
             display: grid;
@@ -43,6 +44,7 @@
     }
 
     dd {
+
         grid-column: 2;
         display: flex;
         flex-wrap: wrap;
