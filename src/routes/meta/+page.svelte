@@ -32,7 +32,7 @@
 
     $: rScale = d3.scaleSqrt()
 			.domain(d3.extent(data, d => d.length))
-			.range([2, 30])
+			.range([3, 30])
             .nice();
 
     $: commitMaxTime = timeScale.invert(commitProgress);
