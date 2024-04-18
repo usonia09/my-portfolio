@@ -181,7 +181,6 @@
 
     </div>
     <time datetime="2018-07-07T20:00:00">{commitMaxTime.toLocaleString()}</time>
-    <FileLines lines={filteredLines} colors={colors}/>
     <dl class="stats">
         <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
         <dd>{filteredLines.length}</dd>
@@ -249,18 +248,9 @@
        
     </dl>
     <p>{hasSelection ? selectedCommits.length : "No"} commits selected</p>
-
-    <!-- <dl class="stats">
-
-        {#each languageBreakdown as [language, lines] }
-                <dt>{language}</dt>
-                <dd>{lines} lines ({d3.format(".0%")(lines/selectedLines.length)})</dd>
-
-            
-        {/each}
-    </dl> -->
     <Pie data={Array.from(languageBreakdown).map(([language, lines]) => ({label: language, value: lines}))} colors={colors} />
     <h2>Codebase evaluation</h2>
+    <FileLines lines={filteredLines} colors={colors}/>
 
 
 
