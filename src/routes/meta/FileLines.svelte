@@ -7,9 +7,9 @@
         files = d3.groups(lines, d => d.file).map(([name, lines]) => {
             return {name, lines};
         });
-    }
+        files = d3.sort(files, d => -d.lines.length);
 
-    console.log("files:", files)
+    }
 
 </script>
 
