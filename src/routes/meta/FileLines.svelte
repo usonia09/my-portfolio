@@ -30,10 +30,12 @@
 			<dt>
 				<code>{file.name}, {file.lines.length}</code>
 			</dt>
-			{#each file.lines as line (line.line) }
-                <div class="line" style="--color: { colors(line.type) }" transition:scale={ 2} animate:flip>
-                </div>
-            {/each}
+            <dd>
+                {#each file.lines as line (line.line) }
+                    <div class="line" style="--color: { colors(line.type) }" transition:scale={ 2} animate:flip>
+                    </div>
+                {/each}
+            </dd>
 
 		</div>
 	{/each}
