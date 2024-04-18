@@ -272,7 +272,22 @@
     
 
 
+    <Scrolly bind:progress={ commitProgress } --scrolly-layout="viz-first" --scrolly-viz-width="1.5fr">
+        {#each commits as commit, index }
+            <p>
+                On {commit.datetime.toLocaleString("en", {dateStyle: "full", timeStyle: "short"})},
+                I made <a href="{commit.url}" target="_blank">{ index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious' }</a>.
+                I edited {commit.totalLines} lines across { d3.rollups(commit.lines, D => D.length, d => d.file).length } files.
+                Then I looked over all I had made, and I saw that it was very good.
+            </p>
+        {/each}
     
+        <svelte:fragment slot="viz">
+            <!-- Visualizations here -->
+            <h2>Codebase evaluation</h2>
+            <FileLines lines={filteredLines} colors={colors}/>
+        </svelte:fragment>
+    </Scrolly>
 
 
 
