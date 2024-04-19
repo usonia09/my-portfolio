@@ -128,26 +128,22 @@
     }
 
     async function dotInteraction (index, evt) {
-	// code will go here
         let hoveredDot = evt.target;
 
         if (evt.type === "mouseenter" || evt.type === "focus") {
-            // dot hovered
             hoveredIndex = index;
             tooltipPosition = await computePosition(hoveredDot, commitTooltip, {
-                strategy: "fixed", // because we use position: fixed
+                strategy: "fixed",
                 middleware: [
                     offset(5), // spacing from tooltip to dot
-                    autoPlacement() // see https://floating-ui.com/docs/autoplacement
+                    autoPlacement()
                 ],
             });
 
         }
         else if (evt.type === "mouseleave" || evt.type === "blur") {
-            // dot unhovered
             hoveredIndex = -1
         } else if (evt.type === "click" || evt.type === "keyup" && evt.key === "Enter") {
-            // dot clicked
             selectedCommits = [commits[index]]
         } 
 
@@ -205,7 +201,7 @@
     
 </section>
 
-    <Scrolly bind:progress={ commitProgress }>
+    <Scrolly bind:progress={ commitProgress } throttle={300}>
         {#each commits as commit, index }
             <p>
                 On {commit.datetime.toLocaleString("en", {dateStyle: "full", timeStyle: "short"})},
@@ -222,6 +218,7 @@
                 <g class="dots">
                     {#each filteredCommits as commit, index (commit.id) }
                         <circle
+                            class:selected={isCommitSelected(commit)}
                             cx={ xScale(commit.datetime) }
                             cy={ yScale(commit.hourFrac) }
                             r= {rScale(commit.totalLines)}
@@ -273,7 +270,7 @@
         </svelte:fragment>
     </Scrolly>
 
-    <Scrolly bind:progress={ commitProgress } --scrolly-layout="viz-first" --scrolly-viz-width="1.5fr">
+    <Scrolly bind:progress={ fileProgress } --scrolly-layout="viz-first" --scrolly-viz-width="1.5fr" throttle={300}>
         {#each commits as commit, index }
             <p>
                 On {commit.datetime.toLocaleString("en", {dateStyle: "full", timeStyle: "short"})},
