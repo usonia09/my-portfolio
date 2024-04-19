@@ -211,6 +211,7 @@
                 <g class="dots">
                     {#each filteredCommits as commit, index (commit.id) }
                         <circle
+                            class:selected={isCommitSelected(commit)}
                             cx={ xScale(commit.datetime) }
                             cy={ yScale(commit.hourFrac) }
                             r= {rScale(commit.totalLines)}
@@ -347,7 +348,7 @@
 
         }
 
-        &:selection {
+        &.selected {
             fill: orange;
         }
         @starting-style {
