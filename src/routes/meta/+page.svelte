@@ -284,7 +284,7 @@
         </svelte:fragment>
     </Scrolly>
 
-    <Scrolly bind:progress={ fileProgress } --scrolly-layout="viz-first" --scrolly-viz-width="1.5fr" debounce={200}>
+    <Scrolly bind:progress={ fileProgress } --scrolly-layout="viz-first" --scrolly-viz-width="1.5fr" throttle={200}>
         {#each commits as commit, index }
             <p>
                 On {commit.datetime.toLocaleString("en", {dateStyle: "full", timeStyle: "short"})},
