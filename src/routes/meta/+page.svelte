@@ -172,6 +172,27 @@
 
     $: languageBreakdown =  d3.rollup(selectedLines, (L) => L.length, (l) => l.type);
 
+    let phrase = [
+    "Advancing my visualization skills",
+    "Deepening my understanding of data storytelling",
+    "Strengthening my grasp of visual narrative",
+    "Improving the clarity of my visualizations",
+    "Sharpening my data presentation techniques",
+    "Refining my visual storytelling",
+    "Broadening my repertoire of visualization techniques",
+    "Elevating the impact of my visual narratives",
+    "Enhancing the effectiveness of my data communication",
+    "Fine-tuning my visualization finesse",
+    "Amplifying the engagement of my visual stories",
+    "Enriching the depth of my data narratives",
+    "Optimizing the coherence of my visual"]
+
+    function choose_phrase(){
+        let index = Math.floor(Math.random()*phrase.length);
+        return phrase[index];
+    }
+
+
 </script>
 
 <svelte:head>
@@ -201,7 +222,7 @@
                 On {commit.datetime.toLocaleString("en", {dateStyle: "full", timeStyle: "short"})},
                 I made <a href="{commit.url}" target="_blank">{ index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious' }</a>.
                 I edited {commit.totalLines} lines across { d3.rollups(commit.lines, D => D.length, d => d.file).length } files.
-                Then I looked over all I had made, and I saw that it was very good.
+                {choose_phrase()}.
             </p>
         {/each}
     
