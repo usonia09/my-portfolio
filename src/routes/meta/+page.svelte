@@ -229,8 +229,7 @@
                             aria-describedby="commit-tooltip"
                             aria-haspopup="true"
                             on:click={evt => dotInteraction(index, evt)}
-                            fill-opacity="50%"
-                            style="--r: {rScale(commit.totalLines)}; transition: all 200ms, r calc(var(--r)*100ms)"
+                            style=" --r: {rScale(commit.totalLines)};"
                         />
                     {/each}
         
@@ -345,17 +344,19 @@
     }
 
     circle {
-        /* transition: 200ms; */
+
+        fill-opacity: "50%";
+        transition: all 200ms, r calc(var(--r)*100ms);
+        transform-origin: center;
+        transform-box: fill-box;
+
         &:hover {
             transform: scale(1.2);
-            transform-origin: center;
-            transform-box: fill-box;
+
         }
 
         &:selection {
-            /* color: red; */
             fill: orange;
-            /* background-color: aquamarine; */
         }
         @starting-style {
             r: 0;
