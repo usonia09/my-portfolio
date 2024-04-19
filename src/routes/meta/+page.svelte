@@ -31,17 +31,15 @@
 
 
     //Scales
-    // let minDate = d3.min(data, (d)=> d.commit.date);
-    // let maxDate = d3.max(data, (d) =>d.commit.date);
 
     $: timeScale = d3.scaleTime()
-        .domain(d3.extent(data, d => d.date)) //possible error source maybe commit specific?
+        .domain(d3.extent(data, d => d.date))
         .range([0, 100])
         .nice();
 
 
     $: commitMaxTime = timeScale.invert(commitProgress);
-    $: fileMaxTime = timeScale.invert(fileProgress); //  Maybe
+    $: fileMaxTime = timeScale.invert(fileProgress);
 
     $: filteredCommits = commits.filter( (commit) => commit.datetime <= commitMaxTime)
     $: filteredLines = data.filter((line) => line.datetime <= commitMaxTime)
@@ -180,11 +178,6 @@
 </svelte:head>
 
 <section class="data_section">
-    <!-- <div class="slider">
-        <label for="commit_time">Show commits until:</label>
-        <input type="range" id="slider" bind:value={commitProgress} min="0" max="100">
-
-    </div> -->
     <time datetime="2018-07-07T20:00:00">{commitMaxTime.toLocaleString()}</time>
     <dl class="stats">
         <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
@@ -345,7 +338,7 @@
 
     circle {
 
-        fill-opacity: "50%";
+        fill-opacity: 50%;
         transition: all 200ms, r calc(var(--r)*100ms);
         transform-origin: center;
         transform-box: fill-box;
