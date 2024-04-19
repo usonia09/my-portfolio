@@ -200,7 +200,6 @@
 </svelte:head>
 
 <section class="data_section">
-    <time datetime="2018-07-07T20:00:00">{commitMaxTime.toLocaleString()}</time>
     <dl class="stats">
         <dt>TOTAL <abbr title="Lines of code">LOC</abbr></dt>
         <dd>{filteredLines.length}</dd>
