@@ -23,8 +23,8 @@
     let margin = {top: 10, right: 10, bottom: 30, left: 20};
     let commitTooltip;
     let tooltipPosition = {x: 0, y: 0};
-    let commitProgress = 100;
-    let fileProgress = 100;
+    let commitProgress = 0;
+    let fileProgress = 0;
 
     let filteredCommits, filteredLines;
 
@@ -211,7 +211,6 @@
                 <g class="dots">
                     {#each filteredCommits as commit, index (commit.id) }
                         <circle
-                            class:selected={isCommitSelected(commit)}
                             cx={ xScale(commit.datetime) }
                             cy={ yScale(commit.hourFrac) }
                             r= {rScale(commit.totalLines)}
