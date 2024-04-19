@@ -43,6 +43,7 @@
 
     $: filteredCommits = commits.filter( (commit) => commit.datetime <= commitMaxTime)
     $: filteredLines = data.filter((line) => line.datetime <= commitMaxTime)
+    $: filteredLinesPerFile = data.filter((line) => line.datetime <= fileMaxTime)
 
     let usableArea = {
 	top: margin.top,
@@ -275,7 +276,7 @@
         <svelte:fragment slot="viz">
             <!-- Visualizations here -->
             <h2>Codebase evaluation</h2>
-            <FileLines lines={filteredLines} colors={colors}/>
+            <FileLines lines={filteredLinesPerFile} colors={colors}/>
         </svelte:fragment>
     </Scrolly>
 
