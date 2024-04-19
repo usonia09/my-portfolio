@@ -24,21 +24,27 @@
     let commitTooltip;
     let tooltipPosition = {x: 0, y: 0};
     let commitProgress = 100;
+    let fileProgress = 100;
+
+    let filteredCommits, filteredLines;
+
+
+
+    //Scales
+    // let minDate = d3.min(data, (d)=> d.commit.date);
+    // let maxDate = d3.max(data, (d) =>d.commit.date);
 
     $: timeScale = d3.scaleTime()
-        .domain(d3.extent(data, d => d.date))
+        .domain(d3.extent(data, d => d.date)) //possible error source maybe commit specific?
         .range([0, 100])
         .nice();
 
-    $: rScale = d3.scaleSqrt()
-			.domain(d3.extent(data, d => d.length))
-			.range([3, 30])
-            .nice();
 
     $: commitMaxTime = timeScale.invert(commitProgress);
+    $: fileMaxTime = timeScale.invert(fileProgress); //  Maybe
 
-    $: filteredCommits = commits.filter( (commit) => commit.datetime < commitMaxTime)
-    $: filteredLines = data.filter((data) => data.datetime < commitMaxTime)
+    $: filteredCommits = commits.filter( (commit) => commit.datetime <= commitMaxTime)
+    $: filteredLines = data.filter((line) => line.datetime <= commitMaxTime)
 
     let usableArea = {
 	top: margin.top,
@@ -64,7 +70,10 @@
             datetime: new Date(row.datetime)
         }));
 
-        commits = d3.groups(data, d => d.commit).map(([commit, lines]) => {
+
+    });
+
+    $: commits = d3.groups(data, d => d.commit).map(([commit, lines]) => {
                     let first = lines[0];
                     let {author, date, time, timezone, datetime} = first;
                     let ret = {
@@ -75,10 +84,6 @@
                         totalLines: lines.length
                     };
 
-                    // https://github.com/61040-fa23/portfolio-usonia09
-
-                    // Like ret.lines = lines
-                    // but non-enumerable so it doesn’t show up in JSON.stringify
                     Object.defineProperty(ret, "lines", {
                         value: lines,
                         configurable: true,
@@ -88,10 +93,14 @@
 
                     return ret;
                 });
-    });
+
+    $: rScale = d3.scaleSqrt()
+			.domain(d3.extent(data, d => d.length))
+			.range([3, 30])
+            .nice();
 
     $: xScale = d3.scaleTime()
-        .domain(d3.extent(filteredCommits, d => d.date))
+        .domain(d3.extent(filteredLines, d => d.datetime))
 		.range([usableArea.left, usableArea.right])
         .nice();
 	
